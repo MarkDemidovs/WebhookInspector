@@ -9,7 +9,7 @@ export const register = async (req: Request, res: Response) => {
     try {
         const hashed = await bcrypt.hash(password, 10);
         const { rows } = await pool.query(
-            "INSERT INTO users (email, password_hash) VALUES ($1, $2)",
+            "INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING *",
             [email, hashed]
         );
         res.status(201).json(rows[0]);
