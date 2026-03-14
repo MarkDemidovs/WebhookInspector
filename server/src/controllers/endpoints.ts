@@ -31,3 +31,15 @@ export const createEndpoint = async (req: Request, res: Response) => {
         return res.status(500).json({ error: "Couldn't create endpoint." });
     }
 };
+
+export const deleteEndpoint = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const userId = (req as any).userId;
+
+    try {
+        const { rows } = await pool.query("DELETE FROM endpoints WHERE id = $1 AND user_id = $2 RETURNING *", [id, userId]);
+        res.status(200).json({ data: rows });
+    } catch (err) {
+        return res.status(500).json({ error: "Couldn't delete endpoint." });
+    }
+}
