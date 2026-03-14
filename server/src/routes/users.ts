@@ -4,6 +4,6 @@ import { requireAuth } from "../middleware/auth";
 const router = Router();
 
 router.post("/register", register);
-router.get("/api", requireAuth, getUsers);
+router.get("/", requireAuth, getUsers);
 
 export default router;
