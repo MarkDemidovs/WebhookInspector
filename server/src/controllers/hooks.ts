@@ -12,3 +12,4 @@ export const captureRequest = async (req: Request, res: Response) => {
     await pool.query("INSERT INTO requests (endpoint_id, method, headers, body, ip) VALUES ($1, $2, $3, $4, $5)", [rows[0].id, req.method, req.headers, req.body, req.ip]);
     res.status(200).json({ ok: true });
 };
+
