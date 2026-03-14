@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { getEndpoints, createEndpoint, deleteEndpoint, getRequests, deleteRequests } from "../controllers/endpoints";
 import { requireAuth } from "../middleware/auth";
-import { get } from "node:http";
 
 const router = Router();
 
