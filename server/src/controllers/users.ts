@@ -17,3 +17,12 @@ export const register = async (req: Request, res: Response) => {
         console.log(err);
     }
 }
+
+export const getUsers = async (req: Request, res: Response) => {
+    try {
+        const { rows } = await pool.query("SELECT * FROM users");
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch users" })
+    }
+}
