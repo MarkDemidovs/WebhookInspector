@@ -12,3 +12,7 @@ export const getEndpoints = async (req: Request, res: Response) => {
         return res.status(500).json({ error: "Couldn't get endpoint." });
     }
 }
+
+export const createEndpoint = async (req: Request, res: Response) => {
+
+};
