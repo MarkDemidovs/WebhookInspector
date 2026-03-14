@@ -26,14 +26,14 @@ export const login = async (req: Request, res: Response) => {
 
         if (!user) return res.status(401).json({ error: "Invalid credentials" });
 
-        const match = await bcrypt.compare(password, user.password);
+        const match = await bcrypt.compare(password, user.password_hash);
         if (!match) return res.status(401).json({ error: "Invalid credentials" });
 
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: "15m" });
 
         res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "strict" });
         res.json({ message: "Logged in", userId: user.id });
-    } catch {
+    } catch (err) {
         res.status(500).json({ error: "Login failed" });
     }
 };
