@@ -43,3 +43,16 @@ export const deleteEndpoint = async (req: Request, res: Response) => {
         return res.status(500).json({ error: "Couldn't delete endpoint." });
     }
 }
+
+
+export const getRequests = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const { rows } = await pool.query("SELECT * FROM requests WHERE endpoint_id = $1", [id]);   
+        res.status(200).json({ data: rows });
+        
+    } catch (err) {
+        return res.status(500).json({ error: "Couldn't get requests." });
+    }
+}
