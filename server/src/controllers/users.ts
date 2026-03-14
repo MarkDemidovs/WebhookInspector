@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 
-
 export const register = async (req: Request, res: Response) => {
     try {
         const { rows } = await pool.query("SELECT * FROM users");
