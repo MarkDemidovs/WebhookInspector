@@ -56,3 +56,26 @@ export const getRequests = async (req: Request, res: Response) => {
         return res.status(500).json({ error: "Couldn't get requests." });
     }
 }
+
+export const deleteRequests = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    
+    try {
+        const { rows } = await pool.query("DELETE FROM requests WHERE endpoint_id = $1 RETURNING *", [id]);
+        res.status(200).json({ data: rows });
+    } catch (err) {
+        return res.status(500).json({ error: "Couldn't delete request. "});
+    }
+}
+
+export const shareRequests = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const share_token = nanoid();
+        const { rows } = await pool.query("UPDATE requests SET share_token = $1 WHERE id = $2 RETURNING *", [share_token, id]);
+
+        res.status(200).json({ data: rows });
+    } catch (err) {
+        return res.status(500).json({ error: "Couldn't update requests. "});
+    }
+}
