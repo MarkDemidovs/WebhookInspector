@@ -38,6 +38,15 @@ export const login = async (req: Request, res: Response) => {
     }
 };
 
+export const logout = async (req: Request, res: Response) => {
+    try {
+        res.clearCookie("token", { httpOnly: true, secure: false, sameSite: "strict" });
+        res.json({ message: "Logged out" });
+    } catch (err) {
+        res.status(500).json({ error: "Logout failed" });
+    }
+};
+
 export const getUsers = async (req: Request, res: Response) => {
     try {
         const { rows } = await pool.query("SELECT * FROM users");
