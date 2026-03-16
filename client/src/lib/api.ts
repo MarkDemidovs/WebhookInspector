@@ -6,7 +6,7 @@ export const api = async (path: string, options?: RequestInit) => {
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-            ...options.headers,
+            ...options?.headers,
         }
     })
 
