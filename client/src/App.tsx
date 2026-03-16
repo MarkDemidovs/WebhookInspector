@@ -11,8 +11,12 @@ function About() {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard/:slug" element={<EndpointDetail />} />
+      <Route path="/share/:token" element={<SharedRequest />} />
     </Routes>
   )
 }
