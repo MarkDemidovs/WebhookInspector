@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
 import { api } from "../lib/api";
+import { useNavigate } from "react-router-dom";
+
+type Endpoint = {
+    id: string;
+    label: string;
+    slug: string;
+    created_at: string;
+}
 
 export default function Dashboard() {
-  const [endpoints, setEndpoints] = useState([]);
+  const navigate = useNavigate();
+
+  const [endpoints, setEndpoints] = useState<Endpoint[]>([]);
   const [label, setLabel] = useState("");
 
   useEffect(() => {
@@ -19,5 +29,21 @@ export default function Dashboard() {
     };
     fetchEndpoints();
   }, []);
-  return 0;
+  return (
+    <>
+      <form>
+        <input placeholder="Enter endpoint name" value={label} onChange={(e) => setLabel(e.target.value)}></input>
+        <button>Create</button>
+      </form>
+
+      {endpoints.map((endpoint) => (
+        <div
+          key={endpoint.id}
+          onClick={() => navigate(`/dashboard/${endpoint.slug}`)}
+        >
+          {endpoint.label}
+        </div>
+      ))}
+    </>
+  );
 }
