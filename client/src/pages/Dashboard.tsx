@@ -58,7 +58,7 @@ export default function Dashboard() {
       {endpoints.map((endpoint) => (
         <div
           key={endpoint.id}
-          onClick={() => navigate(`/dashboard/${endpoint.slug}`)}
+          onClick={() => navigate(`/dashboard/${endpoint.id}`)}
         >
           {endpoint.label}
         </div>
