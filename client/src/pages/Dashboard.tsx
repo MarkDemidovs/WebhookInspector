@@ -18,11 +18,11 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchEndpoints = async () => {
       try {
-        const data = await api("/api/endpoints", {
+        const data = await api("/endpoints", {
           method: "GET",
         });
 
-        setEndpoints(data.data);
+        setEndpoints(data.data ?? []);
       } catch (err) {
         console.error(err);
       }
@@ -33,7 +33,7 @@ export default function Dashboard() {
   const createEndpoint = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const data = await api("/api/endpoints", {
+      const data = await api("/endpoints", {
         method: "POST",
         body: JSON.stringify({ label }),
       });
