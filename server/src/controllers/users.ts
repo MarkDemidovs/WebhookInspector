@@ -12,7 +12,7 @@ export const register = async (req: Request, res: Response) => {
             "INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING *",
             [email, hashed]
         );
-        res.status(201).json(rows[0]);
+        res.status(201).json({ message: "Signed in"});
     } catch (err) {
         res.status(500).json({ error: "Registration failed "});
     }
@@ -34,6 +34,7 @@ export const login = async (req: Request, res: Response) => {
         res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "strict" });
         res.json({ message: "Logged in", userId: user.id });
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: "Login failed" });
     }
 };
