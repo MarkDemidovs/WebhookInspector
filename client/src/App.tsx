@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Signup from "./pages/Signup";
+import EndpointDetail from "./pages/EndpointDetail";
 
 export default function App() {
   return (
@@ -9,6 +10,7 @@ export default function App() {
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard/:slug" element={<EndpointDetail />} />
 
       <Route path="/signup" element={<Signup />} />
     </Routes>
@@ -16,6 +18,5 @@ export default function App() {
 }
 
 /*
-      <Route path="/dashboard/:slug" element={<EndpointDetail />} />
       <Route path="/share/:token" element={<SharedRequest />} />
 */
