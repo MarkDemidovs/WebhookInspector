@@ -4,11 +4,12 @@ import Dashboard from "./pages/Dashboard";
 import Signup from "./pages/Signup";
 import EndpointDetail from "./pages/EndpointDetail";
 import SharedRequest from "./pages/SharedRequest";
+import Landing from "./pages/Landing";
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/dashboard/:id" element={<EndpointDetail />} />
