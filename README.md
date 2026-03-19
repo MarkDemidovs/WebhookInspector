@@ -1,1 +1,2 @@
 # WebhookInspector
+npm install --legacy-peer-deps
