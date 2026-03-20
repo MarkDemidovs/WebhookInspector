@@ -47,7 +47,7 @@ export default function Landing() {
                         <button
                             onClick={() => navigate('/signup')}
                             className="cursor-pointerfont-mono text-xs tracking-btn uppercase px-6 py-3 bg-accent text-bg font-medium rounded-sm hover:bg-accent-hover transition-all">
-                            Create free account →
+                            Create a free account →
                         </button>
                         <button
                             onClick={() => navigate('/login')}
