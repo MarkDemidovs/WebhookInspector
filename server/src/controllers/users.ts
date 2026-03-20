@@ -36,6 +36,8 @@ export const login = async (req: Request, res: Response) => {
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
         });
+
+        return res.json({ message: "Logged in" });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: "Login failed" });
