@@ -10,5 +10,10 @@ export const api = async (path: string, options?: RequestInit) => {
         }
     })
 
+    if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || `HTTP ${res.status}`);
+    }
+
     return res.json();
 }

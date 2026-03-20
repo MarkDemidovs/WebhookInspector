@@ -26,6 +26,7 @@ export default function EndpointDetail() {
   const [requests, setRequests] = useState<Request[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -33,11 +34,15 @@ export default function EndpointDetail() {
         const data = await api(`/endpoints/${id}/requests`);
         setRequests(data.data ?? []);
       } catch (err) {
-        console.error(err);
+        if ((err as Error).message.includes("Not authenticated")) {
+          navigate("/login");
+        } else {
+          console.error(err);
+        }
       }
     };
     fetchRequests();
-  }, []);
+  }, [id, navigate]);
 
   const shareRequest = async (requestId: string) => {
     try {
@@ -48,7 +53,7 @@ export default function EndpointDetail() {
       setCopied(requestId);
       setTimeout(() => setCopied(null), 2000);
     } catch (err) {
-      console.error(err);
+      setError((err as Error).message);
     }
   };
 
@@ -69,6 +74,8 @@ export default function EndpointDetail() {
           ← Dashboard
         </button>
       </div>
+
+      {error && <p className="font-mono text-xs text-method-delete px-4 md:px-8 py-2">{error}</p>}
 
       <div className="flex-1 px-4 md:px-8 py-10 max-w-4xl w-full mx-auto">
 

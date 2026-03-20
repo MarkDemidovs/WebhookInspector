@@ -13,6 +13,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [endpoints, setEndpoints] = useState<Endpoint[]>([]);
   const [label, setLabel] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchEndpoints = async () => {
@@ -20,14 +21,19 @@ export default function Dashboard() {
         const data = await api("/endpoints");
         setEndpoints(data.data ?? []);
       } catch (err) {
-        console.error(err);
+        if ((err as Error).message.includes("Not authenticated")) {
+          navigate("/login");
+        } else {
+          console.error(err);
+        }
       }
     };
     fetchEndpoints();
-  }, []);
+  }, [navigate]);
 
   const createEndpoint = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    setError("");
     try {
       const data = await api("/endpoints", {
         method: "POST",
@@ -36,7 +42,7 @@ export default function Dashboard() {
       setEndpoints([...endpoints, data.data[0]]);
       setLabel("");
     } catch (err) {
-      console.error(err);
+      setError((err as Error).message);
     }
   };
 
@@ -84,6 +90,8 @@ export default function Dashboard() {
             + New
           </button>
         </form>
+
+        {error && <p className="font-mono text-xs text-method-delete mb-4">{error}</p>}
 
         {/* endpoints list */}
         {endpoints.length === 0 ? (
