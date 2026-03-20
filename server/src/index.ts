@@ -1,7 +1,9 @@
 import dotenv from "dotenv";
-import app from "./app";
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
-dotenv.config();
+import app from "./app";
 
 const PORT = Number(process.env.PORT) || 4000;
 
