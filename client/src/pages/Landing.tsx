@@ -97,7 +97,7 @@ export default function Landing() {
 
             {/* footer */}
             <div className="flex flex-col sm:flex-row justify-between items-center gap-2 px-4 md:px-8 py-4 border-t border-border">
-                <p className="font-mono text-xs text-dimmed text-center sm:text-left">webhook-inspector — built with Express + React + Typescript @ markdemidovs</p>
+                <p className="font-mono text-xs text-dimmed text-center sm:text-left">webhook-inspector — built with Express + React + Typescript @ "markdemidovs"</p>
                 <div className="flex gap-6">
                     <p className="font-mono text-xs text-dimmed">requests captured <span className="text-accent">∞</span></p>
                     <p className="font-mono text-xs text-dimmed">latency <span className="text-accent">&lt;5ms</span></p>
