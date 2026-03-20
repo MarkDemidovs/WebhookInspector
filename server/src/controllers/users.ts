@@ -12,9 +12,9 @@ export const register = async (req: Request, res: Response) => {
             "INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING *",
             [email, hashed]
         );
-        res.status(201).json({ message: "Signed in"});
+        res.status(201).json({ message: "Signed in" });
     } catch (err) {
-        res.status(500).json({ error: "Registration failed "});
+        res.status(500).json({ error: "Registration failed " });
     }
 }
 
@@ -31,8 +31,11 @@ export const login = async (req: Request, res: Response) => {
 
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: "15m" });
 
-        res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "strict" });
-        res.json({ message: "Logged in", userId: user.id });
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
+        });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: "Login failed" });
@@ -41,8 +44,11 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
     try {
-        res.clearCookie("token", { httpOnly: true, secure: false, sameSite: "strict" });
-        res.json({ message: "Logged out" });
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
+        }); res.json({ message: "Logged out" });
     } catch (err) {
         res.status(500).json({ error: "Logout failed" });
     }

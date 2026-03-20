@@ -6,10 +6,14 @@ import hooksRouter from "./routes/hooks";
 import endpointsRouter from "./routes/endpoints";
 import requestsRouter from "./routes/requests";
 
+
 const app = express();
+
+const BASE_URL = process.env.VITE_API_URL || 'http://localhost:4000/api';
+
 app.use(cors({
-    origin: true,
-    credentials: true
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true
 }))
 
 app.use(express.json());
