@@ -18,7 +18,7 @@ app.use((0, cors_1.default)({
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 app.use("/api/auth", users_1.default);
-app.use("/api/hooks", hooks_1.default);
+app.use("/hooks", hooks_1.default);
 app.use("/api/endpoints", endpoints_1.default);
 app.use("/api/requests", requests_1.default);
 exports.default = app;
