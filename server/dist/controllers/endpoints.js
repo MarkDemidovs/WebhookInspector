@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteRequests = exports.getRequests = exports.deleteEndpoint = exports.createEndpoint = exports.getEndpoints = void 0;
+exports.deleteRequests = exports.getRequests = exports.deleteEndpoint = exports.createEndpoint = exports.getEndpoint = exports.getEndpoints = void 0;
 const db_1 = require("../db");
 const nanoid_1 = require("nanoid");
 const getEndpoints = async (req, res) => {
@@ -14,6 +14,21 @@ const getEndpoints = async (req, res) => {
     }
 };
 exports.getEndpoints = getEndpoints;
+const getEndpoint = async (req, res) => {
+    const { id } = req.params;
+    const userId = req.userId;
+    try {
+        const { rows } = await db_1.pool.query("SELECT * FROM endpoints WHERE id = $1 AND user_id = $2", [id, userId]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Endpoint not found." });
+        }
+        return res.status(200).json({ data: rows[0] });
+    }
+    catch (err) {
+        return res.status(500).json({ error: "Couldn't get endpoint." });
+    }
+};
+exports.getEndpoint = getEndpoint;
 const createEndpoint = async (req, res) => {
     const userId = req.userId;
     const slug = (0, nanoid_1.nanoid)();

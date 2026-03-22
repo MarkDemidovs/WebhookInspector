@@ -20,15 +20,37 @@ const methodColor: Record<string, string> = {
   PATCH:  "text-method-put",
 };
 
+type Endpoint = {
+  id: string;
+  label: string;
+  slug: string;
+  created_at: string;
+};
+
 export default function EndpointDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [endpoint, setEndpoint] = useState<Endpoint | null>(null);
   const [requests, setRequests] = useState<Request[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [testLoading, setTestLoading] = useState(false);
 
   useEffect(() => {
+    const fetchEndpoint = async () => {
+      try {
+        const data = await api(`/endpoints/${id}`);
+        setEndpoint(data.data);
+      } catch (err) {
+        if ((err as Error).message.includes("Not authenticated")) {
+          navigate("/login");
+        } else {
+          console.error(err);
+        }
+      }
+    };
+
     const fetchRequests = async () => {
       try {
         const data = await api(`/endpoints/${id}/requests`);
@@ -41,8 +63,32 @@ export default function EndpointDetail() {
         }
       }
     };
+
+    fetchEndpoint();
     fetchRequests();
   }, [id, navigate]);
+
+  const sendTestRequest = async () => {
+    if (!endpoint) return;
+    setTestLoading(true);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+      const baseUrl = apiUrl.replace(/\/+$/, '').replace(/\/api$/, '');
+      const hookUrl = `${baseUrl}/hooks/${endpoint.slug}`;
+      await fetch(hookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ test: true, message: 'Test request from WebhookInspector', timestamp: new Date().toISOString() }),
+      });
+      // Refresh requests
+      const data = await api(`/endpoints/${id}/requests`);
+      setRequests(data.data ?? []);
+    } catch (err) {
+      setError('Failed to send test request');
+    } finally {
+      setTestLoading(false);
+    }
+  };
 
   const shareRequest = async (requestId: string) => {
     try {
@@ -86,6 +132,18 @@ export default function EndpointDetail() {
             Request log
           </p>
           <h1 className="font-mono text-2xl font-medium text-primary tracking-tight">Incoming requests</h1>
+          {endpoint && (
+            <div className="mt-4 flex items-center gap-4">
+              <p className="font-mono text-xs text-dimmed">Webhook URL: {import.meta.env.VITE_API_URL?.replace(/\/api$/, '') || 'http://localhost:4000'}/hooks/{endpoint.slug}</p>
+              <button
+                onClick={sendTestRequest}
+                disabled={testLoading}
+                className="cursor-pointer font-mono text-xs tracking-btn uppercase px-3 py-2 bg-accent text-bg font-medium rounded-sm hover:bg-accent-hover transition-all disabled:opacity-50"
+              >
+                {testLoading ? 'Sending...' : 'Send Test Request'}
+              </button>
+            </div>
+          )}
         </div>
 
         {requests.length === 0 ? (

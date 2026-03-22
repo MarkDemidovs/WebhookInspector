@@ -14,6 +14,22 @@ export const getEndpoints = async (req: Request, res: Response) => {
     }
 }
 
+export const getEndpoint = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const userId = (req as any).userId;
+
+    try {
+        const { rows } = await pool.query("SELECT * FROM endpoints WHERE id = $1 AND user_id = $2", [id, userId]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Endpoint not found." });
+        }
+
+        return res.status(200).json({ data: rows[0] });
+    } catch (err) {
+        return res.status(500).json({ error: "Couldn't get endpoint." });
+    }
+}
+
 export const createEndpoint = async (req: Request, res: Response) => {
     const userId = (req as any).userId;
     const slug = nanoid();
