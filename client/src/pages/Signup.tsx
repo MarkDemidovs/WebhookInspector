@@ -21,7 +21,7 @@ export default function Signup() {
       } else {
         setError(data.error || "Registration failed.");
       }
-    } catch (err) {
+    } catch {
       setError("Something went wrong.");
     }
   };

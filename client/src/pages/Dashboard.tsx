@@ -46,6 +46,16 @@ export default function Dashboard() {
     }
   };
 
+  const signOut = async () => {
+    try {
+      await api('/auth/logout', { method: 'POST' });
+    } catch (err) {
+      console.error('Logout failed', err);
+    } finally {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-bg flex flex-col">
 
@@ -57,7 +67,7 @@ export default function Dashboard() {
           <span className="sm:hidden">wi</span>
         </div>
         <button
-          onClick={() => navigate("/login")}
+          onClick={signOut}
           className="cursor-pointer font-mono text-xs tracking-btn uppercase px-3 md:px-4 py-2 border border-border-2 text-subtle rounded-sm hover:border-border hover:text-secondary transition-all"
         >
           Sign out

@@ -1,14 +1,19 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+const rawBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const normalizedBaseUrl = rawBaseUrl.replace(/\/+$/, '');
+const apiBaseUrl = normalizedBaseUrl.endsWith('/api') ? normalizedBaseUrl : `${normalizedBaseUrl}/api`;
 
 export const api = async (path: string, options?: RequestInit) => {
-    const res = await fetch(BASE_URL + path, {
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+    const url = apiBaseUrl + normalizedPath;
+
+    const res = await fetch(url, {
         ...options,
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             ...options?.headers,
         }
-    })
+    });
 
     if (!res.ok) {
         const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
@@ -16,4 +21,4 @@ export const api = async (path: string, options?: RequestInit) => {
     }
 
     return res.json();
-}
+};

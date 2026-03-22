@@ -37,8 +37,13 @@ export default function SharedRequest() {
         setLoading(false);
       }
     };
-    fetchRequest();
-  }, []);
+
+    if (token) {
+      fetchRequest();
+    } else {
+      setLoading(false);
+    }
+  }, [token]);
 
   return (
     <div className="min-h-screen bg-bg flex flex-col">
