@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}</content>
+<parameter name="filePath">/home/mark/Programming/WebhookInspector/client/vercel.json
