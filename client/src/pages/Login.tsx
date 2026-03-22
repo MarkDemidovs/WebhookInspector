@@ -16,8 +16,7 @@ export default function Login() {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
-      if (data.message === "Logged in") {
-        navigate("/dashboard");
+      if (data.message === "Logged in") {        localStorage.setItem('token', data.token);        navigate("/dashboard");
       } else {
         setError(data.error || "Invalid credentials.");
       }

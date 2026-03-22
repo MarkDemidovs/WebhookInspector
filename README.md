@@ -26,6 +26,7 @@
 - `VITE_API_URL`: for client build, should point to the backend root (`https://api.example.com`)
 
 ## Common production pitfalls
-- `VITE_API_URL` incorrectly set to `https://api.example.com/api` or missing `/api` path (fixed in code to normalize).
-- cookies are `secure` + `sameSite=none` in production, so backend must be served via HTTPS and domain aligned.
-- login token expires in 15m; consider refresh tokens or longer `expiresIn` if desired.
+- `VITE_API_URL` should be the API root (e.g., `https://api.example.com`), not with `/api` (code adds `/api`).
+- Ensure `CLIENT_URL` matches your frontend exactly for CORS.
+- Auth is now token-based (localStorage), no cookie issues.
+- JWT tokens expire in 15m; refresh logic can be added later.

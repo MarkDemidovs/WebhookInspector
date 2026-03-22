@@ -52,6 +52,7 @@ export default function Dashboard() {
     } catch (err) {
       console.error('Logout failed', err);
     } finally {
+      localStorage.removeItem('token');
       navigate('/login');
     }
   };
