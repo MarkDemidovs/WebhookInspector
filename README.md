@@ -1,8 +1,9 @@
 # Webhook Inspector
+<a href="https://webhook-inspector-rho.vercel.app/">https://webhook-inspector-rho.vercel.app</a> 
 
 Small app for debugging inbound webhooks: you get a unique URL per endpoint, requests show up in a log, and you can share a read-only link to a single captured request.
 
-Stack is a Vite/React client (`client/`) and an Express + Postgres API (`server/`). Auth is email/password with JWTs stored in `localStorage`.
+Stack is a Vite/React client + Router (`client/`) and an Express + Postgres API (`server/`). Auth is email/password with JWTs stored in `localStorage`. Everything built using Typescript.
 
 ## Running it locally
 
