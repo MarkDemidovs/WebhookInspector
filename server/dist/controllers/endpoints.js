@@ -44,7 +44,12 @@ const deleteEndpoint = async (req, res) => {
 exports.deleteEndpoint = deleteEndpoint;
 const getRequests = async (req, res) => {
     const { id } = req.params;
+    const userId = req.userId;
     try {
+        const ownerCheck = await db_1.pool.query("SELECT 1 FROM endpoints WHERE id = $1 AND user_id = $2", [id, userId]);
+        if (ownerCheck.rowCount === 0) {
+            return res.status(403).json({ error: "Forbidden" });
+        }
         const { rows } = await db_1.pool.query("SELECT * FROM requests WHERE endpoint_id = $1", [id]);
         res.status(200).json({ data: rows });
     }
@@ -55,12 +60,17 @@ const getRequests = async (req, res) => {
 exports.getRequests = getRequests;
 const deleteRequests = async (req, res) => {
     const { id } = req.params;
+    const userId = req.userId;
     try {
+        const ownerCheck = await db_1.pool.query("SELECT 1 FROM endpoints WHERE id = $1 AND user_id = $2", [id, userId]);
+        if (ownerCheck.rowCount === 0) {
+            return res.status(403).json({ error: "Forbidden" });
+        }
         const { rows } = await db_1.pool.query("DELETE FROM requests WHERE endpoint_id = $1 RETURNING *", [id]);
         res.status(200).json({ data: rows });
     }
     catch (err) {
-        return res.status(500).json({ error: "Couldn't delete request. " });
+        return res.status(500).json({ error: "Couldn't delete request." });
     }
 };
 exports.deleteRequests = deleteRequests;

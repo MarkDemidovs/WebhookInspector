@@ -18,6 +18,11 @@ export const register = async (req: Request, res: Response) => {
     }
 }
 
+export const whoami = async (req: Request, res: Response) => {
+    const userId = (req as any).userId;
+    return res.status(200).json({ userId });
+};
+
 export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     try {
@@ -34,7 +39,10 @@ export const login = async (req: Request, res: Response) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            path: '/',
+            // Optional: force expiration matching JWT session
+            maxAge: 15 * 60 * 1000,
         });
 
         return res.json({ message: "Logged in" });
@@ -49,8 +57,10 @@ export const logout = async (req: Request, res: Response) => {
         res.clearCookie("token", {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
-        }); res.json({ message: "Logged out" });
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            path: '/',
+        });
+        res.json({ message: "Logged out" });
     } catch (err) {
         res.status(500).json({ error: "Logout failed" });
     }

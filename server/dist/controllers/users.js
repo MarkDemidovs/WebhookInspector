@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.login = exports.register = void 0;
+exports.logout = exports.login = exports.whoami = exports.register = void 0;
 const db_1 = require("../db");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -19,6 +19,11 @@ const register = async (req, res) => {
     }
 };
 exports.register = register;
+const whoami = async (req, res) => {
+    const userId = req.userId;
+    return res.status(200).json({ userId });
+};
+exports.whoami = whoami;
 const login = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -33,8 +38,12 @@ const login = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            path: '/',
+            // Optional: force expiration matching JWT session
+            maxAge: 15 * 60 * 1000,
         });
+        return res.json({ message: "Logged in" });
     }
     catch (err) {
         console.log(err);
@@ -47,7 +56,8 @@ const logout = async (req, res) => {
         res.clearCookie("token", {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            path: '/',
         });
         res.json({ message: "Logged out" });
     }
