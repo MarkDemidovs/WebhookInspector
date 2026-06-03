@@ -4,7 +4,6 @@
 Small app for debugging inbound webhooks: you get a unique URL per endpoint, requests show up in a log, and you can share a read-only link to a single captured request.
 
 Stack is a Vite/React client + Router (`client/`) and an Express + Postgres API (`server/`). Auth is email/password with JWTs stored in `localStorage`. Everything built using Typescript.
-
 ## Running it locally
 
 You need Postgres running and a database created. Apply `server/schema.sql` once to create tables.
